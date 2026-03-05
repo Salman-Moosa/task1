@@ -1,7 +1,6 @@
 FROM python:3.11-slim
 WORKDIR /app
 COPY . .
-COPY entrypoint.sh .
+RUN pip install -r requirements.txt
 RUN chmod +x entrypoint.sh
 ENTRYPOINT ["./entrypoint.sh"]
-CMD [ "python","app.py" ]
