@@ -4,12 +4,15 @@ The application is simple python3 flask-based REST app. Application needs connec
 
 You can control the application configuration via ENV variables:
 ```conf
-APP_HOST=127.0.0.1
+APP_HOST=0.0.0.0
 APP_PORT=5000
-REDIS_HOST=127.0.0.1
+REDIS_HOST=redis
 REDIS_PORT=6379
-DATABASE_URI=mysql+pymysql://<user>:<password>@<host>:3306/<db_name>
-DATABASE_URI=postgresql+psycopg2://<user>:<password>@<host>:5432/<db_name>
+DATABASE_URI=postgresql+psycopg2://myuser:mypassword@db:5432/mydb
+POSTGRES_USER=myuser
+POSTGRES_PASSWORD=mypassword
+POSTGRES_DB=mydb
+
 ```
 
 > **Note**

@@ -11,16 +11,24 @@ services:
       - .env
 
     depends_on:
-      - db
-      - redis
+       db:
+          condition: service_healthy
+       redis:
+          condition: service_healthy
 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/status"]
+      start_period: 15s
       interval: 10s
+      timeout: 5s
       retries: 5
 
+    networks:
+       - backend   
+
+
   db:
-    image: postgres:15
+    image: postgres:15-alpine
 
     restart: unless-stopped
 
@@ -30,10 +38,35 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      
+      interval: 10s
+      timeout: 5s
+      retries: 5  
+
+    networks:
+       - backend   
+
   redis:
-    image: redis:7
+    image: redis:7-alpine
 
     restart: unless-stopped
 
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    networks:
+       - backend  
+
+
+
 volumes:
   postgres_data:
+
+
+networks:
+    backend:
